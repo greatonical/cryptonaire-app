@@ -120,11 +120,14 @@ export default function MenuScreen() {
         ? `@${profile.username.toLowerCase()}`
         : (profile?.walletAddress ? `@${profile.walletAddress.slice(0, 8).toLowerCase()}` : '—');
 
+    function handleStats() {
+        router.push('/stats');
+    }
     function handleChangeUsername() {
         router.push('/change-username');
     }
     function handleWithdrawTokens() {
-        Alert.alert('Withdraw Tokens', 'This feature is coming soon.');
+        router.push('/withdraw');
     }
     async function handleLogout() {
         Alert.alert('Log Out', 'Are you sure you want to log out?', [
@@ -181,6 +184,8 @@ export default function MenuScreen() {
 
                 {/* ── Options ──────────────────────────────────────────── */}
                 <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.surfaceBorder }]}>
+                    <MenuRow icon="bar-chart" label="Stats" onPress={handleStats} theme={theme} />
+                    <View style={[styles.divider, { backgroundColor: theme.divider }]} />
                     <MenuRow icon="pencil" label="Change Username" onPress={handleChangeUsername} theme={theme} />
                     <View style={[styles.divider, { backgroundColor: theme.divider }]} />
                     <MenuRow icon="wallet" label="Withdraw Tokens" onPress={handleWithdrawTokens} theme={theme} />

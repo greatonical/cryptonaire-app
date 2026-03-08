@@ -57,6 +57,20 @@ export interface LevelProgressResponse {
     data: LevelProgressData;
 }
 
+export interface WithdrawPayload {
+    amount: number;
+}
+
+export interface WithdrawData {
+    txSignature: string;
+    amount: number;
+}
+
+export interface WithdrawResponse {
+    success: boolean;
+    data: WithdrawData;
+}
+
 // ─── User API ─────────────────────────────────────────────────────────────────
 
 export const userApi = {
@@ -100,4 +114,13 @@ export const userApi = {
      */
     updateUsername: (payload: UpdateUsernamePayload) =>
         apiClient.patch<UserProfileResponse>("/user/me/username", payload),
+
+    /**
+     * POST /user/me/withdraw
+     * Deducts the specified amount of $SKR tokens from the user's in-app balance
+     * and transfers equivalent SPL tokens from the treasury to the user's Solana wallet.
+     * Requires JWT.
+     */
+    withdraw: (payload: WithdrawPayload) =>
+        apiClient.post<WithdrawResponse>("/user/me/withdraw", payload),
 };

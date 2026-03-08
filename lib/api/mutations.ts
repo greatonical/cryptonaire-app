@@ -3,7 +3,7 @@ import { authApi, AuthVerifyPayload, AuthVerifyResponse } from "./auth";
 import { gameApi, GenerateQuestionsPayload, GenerateQuestionsResponse, UpdateBothPayload, UpdatePointsPayload, UpdateResponse, UpdateTokensPayload } from "./game";
 import { leaderboardApi, LeaderboardEntry, SetPointsPayload, SingleEntryResponse } from "./leaderboard";
 import { queryKeys } from "./queries";
-import { UpdateUsernamePayload, userApi, UserProfileResponse } from "./user";
+import { UpdateUsernamePayload, userApi, UserProfileResponse, WithdrawPayload, WithdrawResponse } from "./user";
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 
@@ -159,6 +159,29 @@ export function useAddToUserBothMutation(
 }
 
 // ─── User ──────────────────────────────────────────────────────────────────
+
+/**
+ * Mutation that calls POST /user/me/withdraw.
+ * Deducts $SKR tokens from the in-app balance and transfers SPL tokens on-chain.
+ * Invalidates user tokens cache on success.
+ */
+export function useWithdrawMutation(
+    options?: {
+        onSuccess?: (data: WithdrawResponse) => void;
+        onError?: (error: Error) => void;
+    },
+) {
+    const queryClient = useQueryClient();
+
+    return useMutation<WithdrawResponse, Error, WithdrawPayload>({
+        mutationFn: (payload) => userApi.withdraw(payload),
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.user.all });
+            options?.onSuccess?.(data);
+        },
+        onError: options?.onError,
+    });
+}
 
 /**
  * Mutation that calls PATCH /user/me/username.

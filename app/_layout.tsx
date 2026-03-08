@@ -93,6 +93,8 @@ export default function RootLayout() {
             <Stack.Screen name="game/index" options={{ animation: 'fade', headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
             <Stack.Screen name="change-username" options={{ presentation: 'modal', headerShown: false }} />
+            <Stack.Screen name="withdraw" options={{ presentation: 'modal', headerShown: false }} />
+            <Stack.Screen name="stats" options={{ presentation: 'modal', headerShown: false }} />
           </Stack>
 
           <StatusBar style="auto" />
